@@ -140,4 +140,35 @@
             -->
         </junit>
     </target>
+
+    <target name="sonar-scan" depends="compile" unless="skipSonarScan">
+        <property environment="env"/>
+
+        <fail message="SONAR_HOST_URL environment variable not set" unless="env.SONAR_HOST_URL"/>
+        <fail message="SONAR_TOKEN environment variable not set" unless="env.SONAR_TOKEN"/>
+
+        <path id="sonar.lib.path">
+            <fileset dir="lib" includes="*.jar"/>
+        </path>
+        <pathconvert property="sonar.libraries.list" refid="sonar.lib.path" pathsep=","/>
+
+        <echo message="Running SonarQube scan for ical4j-0.9.16-patched"/>
+
+        <exec executable="sonar-scanner" failonerror="true">
+            <arg value="-Dsonar.projectKey=ical4j-0.9.16-patched"/>
+            <arg value="-Dsonar.projectName=ical4j-0.9.16-patched"/>
+            <arg value="-Dsonar.java.source=1.5"/>
+            <arg value="-Dsonar.sources=${source.dir}"/>
+
+            <arg value="-Dsonar.java.binaries=${output.dir}"/>
+
+            <arg value="-Dsonar.java.libraries=${sonar.libraries.list}"/>
+            <arg value="-Dsonar.java.test.libraries=${sonar.libraries.list}"/>
+
+            <arg value="-Dsonar.tests=${test.source.dir}"/>
+
+            <arg value="-Dsonar.host.url=${env.SONAR_HOST_URL}"/>
+            <arg value="-Dsonar.token=${env.SONAR_TOKEN}"/>
+        </exec>
+    </target>
 </project>
