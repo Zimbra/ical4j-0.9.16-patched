@@ -57,7 +57,7 @@
         </delete>
     </target>
     
-    <target name="package" depends="compile, clean-package">
+    <target name="package" depends="clean-compile, compile, clean-package">
         <manifest file="etc/manifest.mf">
             <!-- Add manifest attributes here.. -->
             <attribute name="Class-Path" value="commons-logging.jar" />
