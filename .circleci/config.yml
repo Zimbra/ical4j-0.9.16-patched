@@ -157,4 +157,4 @@ workflows:
           filters:
             branches:
               only:
-                - ZCS-19365
+                - develop
